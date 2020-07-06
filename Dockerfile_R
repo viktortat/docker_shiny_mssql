@@ -1,29 +1,25 @@
-FROM rocker/verse
+FROM rocker/shiny-verse
 
-
+#update all packages
 RUN apt-get update
 
+#upgrade
 RUN apt-get upgrade -y
 
-RUN apt install gpg-agent -y
+#install additional packages
+RUN apt install gpg-agent -y unixodbc apt-utils curl
 
-RUN apt install unixodbc apt-utils
+#get msodbcsql17 and install it
+ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+ RUN curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+ RUN apt-get update -y
+ RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17 
 
+#rename SQL Driver title in odbcinst file
+RUN sed -i 's/ODBC Driver 17 for SQL Server/SQL Server/' etc/odbcinst.ini
 
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
-RUN apt-get update -y
-RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17 
+#install packaes needed for running the app
+RUN R -e "install.packages(c('odbc', 'data.table'))"
 
-#RUN apt-get install -y mssql-server
-
-#unixodbc-dev mssql-tools
-
-#RUN sed -i 's/ODBC Driver 17 for SQL Server/SQL Server/' etc/odbcinst.ini
-
-RUN R -e "install.packages('odbc')"
-
-RUN R -e "print(2+2)"
-
-#copy file to image
-COPY db_connector.R /
+#copy app to image
+COPY second_app/ /srv/shiny-server/second_app

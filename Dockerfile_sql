@@ -10,15 +10,12 @@ ENV MSSQL_PID Express
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Copy initialization scripts
+# Copy scripts to load data
 COPY sqlserver/ /usr/src/app
 
-# Grant permissions for the run-initialization script to be executable
+# Grant permissions to ensure files are executable
 RUN chmod +x /usr/src/app/run-startup.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
 
+#define new entry point
 CMD /bin/bash /usr/src/app/entrypoint.sh
-
-#COPY createDB.sql /usr/src/app
-
-#RUN sqlcmd -S localhost -U sa -P MyPassword123! -d master #-q "CREATE DATABASE dockdock"
