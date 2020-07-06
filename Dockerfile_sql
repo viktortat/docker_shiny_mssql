@@ -1,0 +1,24 @@
+FROM mcr.microsoft.com/mssql/server:2017-CU21-ubuntu-16.04
+
+RUN ln -s /opt/mssql-tools/bin/* /usr/local/bin/
+
+ENV SA_PASSWORD MyPassword123!
+ENV ACCEPT_EULA Y
+ENV MSSQL_PID Express
+
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+# Copy initialization scripts
+COPY sqlserver/ /usr/src/app
+
+# Grant permissions for the run-initialization script to be executable
+RUN chmod +x /usr/src/app/run-startup.sh
+RUN chmod +x /usr/src/app/entrypoint.sh
+
+CMD /bin/bash /usr/src/app/entrypoint.sh
+
+#COPY createDB.sql /usr/src/app
+
+#RUN sqlcmd -S localhost -U sa -P MyPassword123! -d master #-q "CREATE DATABASE dockdock"

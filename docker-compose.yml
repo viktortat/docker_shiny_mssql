@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+
+#   sql-server-db:
+#     network_mode: host
+#     container_name: sql-server-db
+#     image: sql-w-data
+#     ports:
+#       - "1433:1433"
+#     environment:
+#       SA_PASSWORD: "SuperDuperSafe123!!"
+#       MSSQL_PID: "Express"
+#       ACCEPT_EULA: "Y"
+
+  R-container:
+  #  network_mode: host
+    container_name: R-container
+    image: con1
+    networks:
+       - dockernet
+
+networks:
+    dockernet:
+        external: true
