@@ -6,8 +6,8 @@ con <- dbConnect(odbc(), Driver = "SQL Server", Server = "sql-server", Database 
 
 iris <- as.data.table(dbGetQuery(con, "select * from iris"))
 
-iris[, Sepal_Length:=as.numeric(Sepal_Length)][, Sepal_Width:=as.numeric(Sepal_Width)]
-iris[, Petal_Length:=as.numeric(Petal_Length)][, Petal_Width:=as.numeric(Petal_Width)]
+# iris[, Sepal_Length:=as.numeric(Sepal_Length)][, Sepal_Width:=as.numeric(Sepal_Width)]
+# iris[, Petal_Length:=as.numeric(Petal_Length)][, Petal_Width:=as.numeric(Petal_Width)]
 
 print(iris)
 
@@ -42,8 +42,8 @@ server <- function(input, output) {
 
     output$sep.length <- renderPlot({
         
-        # draw the histogram 
-        hist(iris[Species==input$select, Sepal.Length], breaks=20, col = 'darkgray', border = 'white', main="Sepal Length", xlab="cm")
+       # draw the histogram 
+        hist(iris[Species==input$select, Sepal.Length], col = 'darkgray', border = 'white', main="Sepal Length", xlab="cm")
     })
     
     output$sep.width <- renderPlot({

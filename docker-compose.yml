@@ -1,20 +1,15 @@
 version: "3.7"
 services:
 
-  sql-server-db:
-    #network_mode: host
-    container_name: sql-server
-    image: sql-server
-    ports:
-      - "1433:1433"
-    # environment:
-    #   SA_PASSWORD: "MyPassword123!"
-    #   MSSQL_PID: "Express"
-    #   ACCEPT_EULA: "Y"
-
   R-container:
-   # network_mode: host
     container_name: R-container
     image: shiny_app
     ports:
         - "3838:3838"
+
+  sql-server-db:
+    container_name: sql-server
+    image: sql-server
+    ports:
+      - "1433:1433"
+ 

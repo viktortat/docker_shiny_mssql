@@ -3,10 +3,11 @@ GO
 USE app_db;
 GO
 
-CREATE TABLE iris (Sepal_Length NCHAR(3), 
-Sepal_Width NCHAR(3),
-Petal_Length NCHAR(3),
-Petal_Width NCHAR(3),
+CREATE TABLE iris (
+Sepal_Length numeric(10,5), 
+Sepal_Width numeric(10,5), 
+Petal_Length numeric(10,5), 
+Petal_Width numeric(10,5), 
 Species VARCHAR(20));
 GO
 
@@ -19,3 +20,6 @@ WITH
     TABLOCK
 )
 GO
+
+UPDATE iris
+SET Species = REPLACE(Species, CHAR(34), '')

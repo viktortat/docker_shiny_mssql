@@ -39,14 +39,25 @@ docker build -t sql-server -f Dockerfile_sql .
 docker run --rm --name sql-server -d -p 1433:1433 sql-server
 
 #shell into sql container
-docker exec -it sql-server "bash"
+docker exec -it sql-server bash
 
 #log on to database
 sqlcmd -S localhost -U sa -P MyPassword123! -d master
 
+#build R/Shiny image
+docker build -t shiny_app -f Dockerfile_R .
 
+#run R/Shiny image
+docker run --rm --name R-container -d -p 3838:3838 shiny_app
 
+#check R is running
+docker exec -it R-container R
 
+#run compose script to spin up all containers
+docker-compose up -d
 
-docker network create -d bridge --subnet 127.0.0.1/24 --gateway 127.0.0.1 dockernet
+#read out logs
+docker logs R-container -f
 
+#finish off by bringing down the containers
+docker-compose down
